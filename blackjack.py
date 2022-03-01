@@ -2,7 +2,7 @@ import random
 
 suits = ("Hearts","Diamonds","Spades","Clubs")
 ranks = ("Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Jack","Queen","King","Ace")
-values = {"Two":2,"Three":3,"Four":4,"Five":5,"Six":6,"Seven":7,"Eight":8,"Nine":9,"Ten":10,"Jack":10,"Queen":10,"King":10,"Ace":11}
+values = {"Two":2,"Three":3,"Four":4,"Five":5,"Six":6,"Seven":7,"Eight":8,"Nine":9,"Ten":10,"Jack":10,"Queen":10,"King":10,"Ace":1}
 
 playing = True
 
@@ -36,6 +36,7 @@ class Deck:
     
 
 class Hand:
+class Hand:
     def __init__(self):
         self.cards = []
         self.value = 0
@@ -46,5 +47,8 @@ class Hand:
         self.value += card.value
 
     def adjust_for_aces(self):
-        pass
+        if self.value >= 11 and self.aces > 0:
+            self.value += 10
+    def __str__(self):
+        return "\n".join([str(card) for card in self.cards])
     
