@@ -20,7 +20,6 @@ class Deck:
     
     def __init__(self):
         self.all_cards = []
-
         for suit in suits:
             for rank in ranks:
                 created_card = Card(suit,rank)
@@ -34,4 +33,18 @@ class Deck:
 
     def deal_one(self):
         return self.all_cards.pop()
+    
+
+class Hand:
+    def __init__(self):
+        self.cards = []
+        self.value = 0
+        self.aces = 0
+
+    def add_card(self,card):
+        self.cards.append(card)
+        self.value += card.value
+
+    def adjust_for_aces(self):
+        pass
     
