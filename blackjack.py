@@ -36,7 +36,6 @@ class Deck:
     
 
 class Hand:
-class Hand:
     def __init__(self):
         self.cards = []
         self.value = 0
@@ -52,3 +51,13 @@ class Hand:
     def __str__(self):
         return "\n".join([str(card) for card in self.cards])
     
+class Chips:
+    def __init__(self):
+        self.total = 0
+        self.bet = 0
+       
+    def win_bet(self):
+        self.total += self.bet
+        
+    def lose_bet(self):
+        self.total -= self.bet
