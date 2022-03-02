@@ -49,7 +49,7 @@ class Hand:
         if self.value >= 11 and self.aces > 0:
             self.value += 10
     def __str__(self):
-        return "\n".join([str(card) for card in self.cards])
+        return ", ".join([str(card) for card in self.cards])
     
 class Chips:
     def __init__(self):
@@ -77,10 +77,24 @@ class Chips:
 #taking Hits function
 
 def hit(deck,hand):
+    global playing
     while hand.value < 22:
         hit = input("Do you want to hit? Y/N")
         if hit == "Y" or hit == "y":
             hand.add_card(deck.deal_one())
         else:
+            playing = False
             break
+
+#function to display the hand
+def show_some(player,dealer):
+    dealer_first_rank = dealer.cards[0].rank
+    dealer_first_suit = dealer.cards[0].suit
+    print("Player hand: {}".format(player))
+    print("Dealer hand: {} of {}".format(dealer_first_rank,dealer_first_suit))
+    
+
+def show_all(player,dealer):
+    print("Player hand: {}".format(player))
+    print("Dealer hand: {}".format(dealer))
 
