@@ -61,3 +61,14 @@ class Chips:
         
     def lose_bet(self):
         self.total -= self.bet
+
+    def take_bet(self):
+        while True:
+            bet = input("Please place your bet:")
+            if bet.isdigit():
+                self.bet = int(bet)
+                break
+            else:
+                print("Please enter a number")
+                continue   
+
