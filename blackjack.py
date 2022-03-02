@@ -72,3 +72,15 @@ class Chips:
                 print("Please enter a number")
                 continue   
 
+#function for playing setup
+
+#taking Hits function
+
+def hit(deck,hand):
+    while hand.value < 22:
+        hit = input("Do you want to hit? Y/N")
+        if hit == "Y" or hit == "y":
+            hand.add_card(deck.deal_one())
+        else:
+            break
+
