@@ -98,3 +98,29 @@ def show_all(player,dealer):
     print("Player hand: {}".format(player))
     print("Dealer hand: {}".format(dealer))
 
+#Function to handle end of game scenario
+def player_busts(player,chips):
+    if player.value > 21:
+        print("Player bust!")
+        chips.lose_bet()      
+
+def player_wins(player,chips,dealer):
+    if player.value < 22 and player.value > dealer.value:
+        print("Player wins!")
+        chips.win_bet()
+
+def dealer_busts(chips,dealer):
+    if dealer.value > 21:
+        print("Dealer busts! Player wins!")
+        chips.win_bet()
+        
+def dealer_wins(player,chips,dealer):
+    if player.value < dealer.value:
+        print("Dealer wins")
+        chips.lose_bet()    
+
+def push(player,chips,dealer):
+    if player.value == dealer.value:
+        print("Push")
+        chips.bet = 0 
+        
