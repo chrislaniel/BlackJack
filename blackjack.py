@@ -52,7 +52,7 @@ class Hand:
         
 
     def adjust_for_aces(self):
-        if self.value >= 11 and self.aces > 0:
+        if self.value < 12 and self.aces > 0:
             self.value += 10
             
     
@@ -98,7 +98,6 @@ def show_all(player,dealer):
     print("Dealer hand: {}".format(dealer))
 
 def hit(deck,hand):
-    global playing
     while hand.value < 22:
         hit = input("Do you want to hit? Y/N")
         if hit == "Y" or hit == "y":
@@ -107,13 +106,12 @@ def hit(deck,hand):
             show_some(player,dealer)
             
         else:
-            playing = False
             break
     
     
 def player_busts(player,chips):
-    global playing
     if player.value > 21:
+        global playing
         print("Player bust!")
         chips.lose_bet()
         playing = False
@@ -121,59 +119,78 @@ def player_busts(player,chips):
 
 def player_wins(player,chips,dealer):
     if player.value < 22 and player.value > dealer.value:
+        global playing
         print("Player wins!")
         chips.win_bet()
+        playing = False
         
     
 
 def dealer_busts(chips,dealer):
     if dealer.value > 21:
+        global playing
         print("Dealer busts! Player wins!")
         chips.win_bet()
+        playing = False
         
         
 
 def dealer_wins(player,chips,dealer):
-    if player.value < dealer.value:
+    if dealer.value < 22 and player.value < dealer.value:
+        global playing
         print("Dealer wins")
         chips.lose_bet()
-        
+        playing = False
         
 
-def push():
+def push(player,dealer,chips):
     if player.value == dealer.value:
+        global playing
         print("Push")
         chips.bet = 0 
-        
+        playing = False
+
+def replay(player,dealer):
+    global playing
+    playing = True
+    player.aces = 0
+    dealer.aces = 0
+    player.cards = []
+    dealer.cards = []
+    player.value = 0
+    dealer.value = 0
+
+
         
         
 #Gameplay
 
+#Creating player
+player = Hand()
+dealer = Hand()
+
+#setup player chips
+chips = Chips()
+
+
 while True:
-    print("Welcome to the Blackjack game")
-    global playing
-    playing = True
+
     #Creating the deck of card and shuffle
     deck = Deck()
     deck.shuffle()
+    print("Welcome to the Blackjack game")
     
     #Creating player and dealer hand
-    player = Hand()
-    dealer = Hand()
     player.add_card(deck.deal_one())
     player.add_card(deck.deal_one())
     dealer.add_card(deck.deal_one())
     dealer.add_card(deck.deal_one())
-    
-    #setup player chips
-    chips = Chips()
     
     #asking for player bet
     chips.take_bet()
     
     #show card (only 1 for dealer)
     show_some(player,dealer)
-    
     
     
     while playing:
@@ -184,27 +201,28 @@ while True:
         
         player_busts(player,chips)
         
-    #show all cards
-    show_all(player,dealer)
         
-    #play dealer hand until he reach 17
-    while dealer.value < 17:
-        dealer.add_card(deck.deal_one())
-        dealer.adjust_for_aces()
-            
-    show_all(player,dealer)
-        
-    #running different winning scenarios
-    player_wins(player,chips,dealer)
-    dealer_busts(chips,dealer)
-    dealer_wins(player,chips,dealer)
-    push()
+        #play dealer hand until he reach 17
+        while dealer.value < 17 and playing:
+            dealer.adjust_for_aces()
+            dealer.add_card(deck.deal_one())
+            dealer.adjust_for_aces()
+
+        show_all(player,dealer)
+
+        #running different winning scenarios
+        dealer_busts(chips,dealer)
+        player_wins(player,chips,dealer)
+        dealer_wins(player,chips,dealer)
+        push(player,dealer,chips)
+
         
     #inform player of their chips total
     print("Your chips total is : {}".format(chips.total))
-    
+    play_again = "no"
     play_again = input("Do you want to play another hand? Y/N")
     if play_again == "Y" or play_again == "y":
+        replay(player,dealer)
         continue
-    else:
-        break
+        
+    break
